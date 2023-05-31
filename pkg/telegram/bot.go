@@ -2,15 +2,22 @@ package telegram
 
 import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/zhashkevych/go-pocket-sdk"
 	"log"
 )
 
 type Bot struct {
-	bot *tgbotapi.BotAPI
+	bot          *tgbotapi.BotAPI
+	pocketClient *pocket.Client
+	redirectURL  string
 }
 
-func NewBot(bot *tgbotapi.BotAPI) *Bot {
-	return &Bot{bot: bot}
+func NewBot(bot *tgbotapi.BotAPI, pocketClient *pocket.Client, redirectURL string) *Bot {
+	return &Bot{
+		bot:          bot,
+		pocketClient: pocketClient,
+		redirectURL:  redirectURL,
+	}
 }
 func (b *Bot) Start() error {
 	log.Printf("Authorized on account %s", b.bot.Self.UserName)
@@ -25,24 +32,19 @@ func (b *Bot) Start() error {
 
 func (b *Bot) handleUpdates(updates tgbotapi.UpdatesChannel) error {
 	for update := range updates {
+
 		if update.Message == nil { // If we got a message
 			continue
 		}
+
+		if update.Message.IsCommand() {
+			b.handleCommand(update.Message)
+			continue
+		}
+
 		if err := b.handleMessage(update.Message); err != nil {
 			return err
 		}
-	}
-	return nil
-}
-
-func (b *Bot) handleMessage(message *tgbotapi.Message) error {
-	log.Printf("[%s] %s", message.From.UserName, message.Text)
-
-	msg := tgbotapi.NewMessage(message.Chat.ID, message.Text)
-
-	// Send the message.
-	if _, err := b.bot.Send(msg); err != nil {
-		return err
 	}
 	return nil
 }
