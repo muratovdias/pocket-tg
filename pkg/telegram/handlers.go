@@ -49,7 +49,7 @@ func (b *Bot) createInlineKeyboard(msg *tgbotapi.MessageConfig) (tgbotapi.Inline
 	}
 	clientKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonURL("Permission", link),
+			tgbotapi.NewInlineKeyboardButtonURL("Permission✔️", link),
 		),
 	)
 	return clientKeyboard, nil
