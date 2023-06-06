@@ -41,7 +41,10 @@ func (b *Bot) handleUpdates(updates tgbotapi.UpdatesChannel) error {
 		}
 
 		if update.Message.IsCommand() {
-			b.handleCommand(update.Message)
+			if err := b.handleCommand(update.Message); err != nil {
+				log.Println("handleCommand(): ", err.Error())
+				return err
+			}
 			continue
 		}
 

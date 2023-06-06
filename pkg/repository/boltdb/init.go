@@ -30,7 +30,7 @@ func CreateBuckets(db *bolt.DB) error {
 		}
 		return nil
 	}); err != nil {
-		return err
+		return fmt.Errorf("repo: boltdb: CreateBuckets(): %w", err)
 	}
 	return nil
 }
