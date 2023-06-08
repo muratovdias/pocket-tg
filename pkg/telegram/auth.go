@@ -8,8 +8,7 @@ import (
 )
 
 func (b *Bot) initAuthorization(chatID int64) error {
-	msg := tgbotapi.NewMessage(chatID, "")
-	msg.Text = "Welcome !🤗\nI will be helping you to save links into your Pocket account.\nFor this, follow the link and give me permission."
+	msg := tgbotapi.NewMessage(chatID, b.messages.Responses.Start)
 	keyboard, err := b.createInlineKeyboard(msg.ChatID)
 	if err != nil {
 		return err

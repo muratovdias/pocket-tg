@@ -3,11 +3,12 @@ package boltdb
 import (
 	"fmt"
 	"github.com/boltdb/bolt"
+	"github.com/muratovdias/pocket-tg/pkg/config"
 	"github.com/muratovdias/pocket-tg/pkg/repository"
 )
 
-func InitDB() (*bolt.DB, error) {
-	db, err := bolt.Open("pocket.db", 0600, nil)
+func InitDB(cfg *config.Config) (*bolt.DB, error) {
+	db, err := bolt.Open(cfg.DBPath, 0600, nil)
 
 	if err != nil {
 		return nil, fmt.Errorf("repo: bolt: InitDB(): %w", err)

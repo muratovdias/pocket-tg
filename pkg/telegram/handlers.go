@@ -2,19 +2,14 @@ package telegram
 
 import (
 	"context"
-	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/zhashkevych/go-pocket-sdk"
 	"log"
 	url2 "net/url"
 )
 
-const (
-	AlreadyAuthorized = "You are already authorized"
-)
-
 func (b *Bot) handleCommand(message *tgbotapi.Message) error {
-	msg := tgbotapi.NewMessage(message.Chat.ID, "Sorry, I don't know that command :(")
+	msg := tgbotapi.NewMessage(message.Chat.ID, b.messages.Responses.UnknownCommand)
 	switch message.Command() {
 	case "start":
 		return b.handleStartCommand(message)
@@ -44,7 +39,7 @@ func (b *Bot) handleMessage(message *tgbotapi.Message) error {
 		return errUnableToSave
 	}
 	// Send the message.
-	msg := tgbotapi.NewMessage(message.Chat.ID, "Link saved successfully ✅")
+	msg := tgbotapi.NewMessage(message.Chat.ID, b.messages.Responses.SavedSuccessfully)
 	if _, err := b.bot.Send(msg); err != nil {
 		return err
 	}
@@ -52,9 +47,8 @@ func (b *Bot) handleMessage(message *tgbotapi.Message) error {
 }
 
 func (b *Bot) handleStartCommand(message *tgbotapi.Message) error {
-	msg := tgbotapi.NewMessage(message.Chat.ID, AlreadyAuthorized)
+	msg := tgbotapi.NewMessage(message.Chat.ID, b.messages.Responses.AlreadyAuthorized)
 	if _, err := b.getAccessToken(message.Chat.ID); err != nil {
-		fmt.Println("authorization")
 		return b.initAuthorization(msg.ChatID)
 	}
 

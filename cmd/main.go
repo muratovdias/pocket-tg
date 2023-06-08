@@ -38,14 +38,14 @@ func main() {
 	}
 	boltRepo := boltdb.NewRepo(db)
 
-	telegramBot := telegram.NewBot(bot, pocketClient, boltRepo, cfg.RedirectURL)
+	telegramBot := telegram.NewBot(bot, pocketClient, boltRepo, cfg.Messages, cfg.RedirectURL)
 	go func() {
 		if err := telegramBot.Start(); err != nil {
 			log.Fatal(err.Error())
 		}
 	}()
 
-	authorizationServer := server.NewAuthorizationServer(pocketClient, boltRepo, "https://t.me/pocketman_bot")
+	authorizationServer := server.NewAuthorizationServer(pocketClient, boltRepo, cfg.TelegramBotURL)
 	if err := authorizationServer.Start(); err != nil {
 		log.Fatal(err.Error())
 	}

@@ -1,0 +1,15 @@
+db_file: "pocket.db"
+
+bot_url: "https://t.me/pocketman_bot"
+
+messages:
+  responses:
+    start: "Welcome !🤗\nI will be helping you to save links into your Pocket account.\nFor this, follow the link and give me permission."
+    already_authorized: "You are already authorized"
+    saved_successfully: "Link saved successfully ✅"
+    unknown_command: "Sorry, I don't know that command 🧐"
+  errors:
+    default: "Unknown error"
+    invalid_link: "Invalid link ☹️"
+    unable_to_save: "Sorry, unable to save, try again later 🫠"
+    unauthorized: "You are not authorized !"
